@@ -6,6 +6,7 @@ use JMS\Serializer\Context;
 use JMS\Serializer\VisitorInterface;
 use JMS\Serializer\GraphNavigator;
 use JMS\Serializer\Handler\SubscribingHandlerInterface;
+use JMS\Serializer\Exception\RuntimeException;
 use MyCLabs\Enum\Enum;
 
 class EnumHandler
@@ -31,7 +32,7 @@ class EnumHandler
                 }
             }
 
-            throw new \UnexpectedValueException(sprintf('%s is not a valid %s value', $data, $enumClass));
+            throw new RuntimeException(sprintf('%s is not a valid %s value', $data, $enumClass));
         }
 
         throw new \UnexpectedValueException("Invalid direction");
