@@ -30,7 +30,7 @@ class EnumArrayType extends Type
         $enumClass = $data['class'];
         $values = array_map(function($enumValue) use ($enumClass) {
             return new $enumClass($enumValue);
-        }, array_values($data['values']));
+        }, $data['values']);
 
         return $values;
     }
@@ -46,10 +46,10 @@ class EnumArrayType extends Type
         }
 
         $struct = [
-            'class' => get_class($value[0]),
+            'class' => get_class(array_values($value)[0]),
             'values' => array_map(function($enumInstance) {
                 return $enumInstance->getValue();
-            }, array_values($value)),
+            }, $value),
         ];
 
         return json_encode($struct);
