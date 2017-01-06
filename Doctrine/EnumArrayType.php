@@ -59,4 +59,12 @@ class EnumArrayType extends Type
     {
         return 'enumarray';
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function requiresSQLCommentHint(AbstractPlatform $platform)
+    {
+        return true;
+    }
 }
