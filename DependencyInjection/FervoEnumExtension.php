@@ -87,7 +87,7 @@ class FervoEnumExtension extends Extension
 
         $phpArray = [];
         foreach ($enumFQCN::toArray() as $constant => $value) {
-            $label = sprintf('%s.%s', $config['form_type'], (string) $value);
+            $label = sprintf('%s.%s', Inflector::tableize($enumClass), (string) $value);
             $value = sprintf('%s::%s()', $enumClass, $constant);
             $phpArray[$label] = $value;
         }
