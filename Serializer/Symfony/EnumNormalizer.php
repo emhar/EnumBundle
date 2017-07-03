@@ -73,8 +73,8 @@ class EnumNormalizer implements NormalizerInterface, DenormalizerInterface
             try {
                 $enum = $class::$constant();
                 if ($enum instanceof AbstractTranslatableEnum) {
-                    $value =
-                    if ($this->translator->trans($enum->getTranslationKey(), array(), 'enums') === ((string)$data)) {
+                    $value = $this->translator->trans($enum->getTranslationKey(), array(), 'enums');
+                    if ($value === ((string)$data)) {
                         return $enum;
                     }
                     $allowedValues[] = $value;
