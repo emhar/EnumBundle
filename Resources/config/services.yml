@@ -18,8 +18,18 @@ services:
             - { name: twig.extension }
 
     fervo_enum.jms_serializer.enum_handler:
-        class: Fervo\EnumBundle\JMSSerializer\EnumHandler
+        class: Fervo\EnumBundle\Serializer\JMS\EnumHandler
         public: true
+        arguments:
+            - '@translator'
+
+    fervo_enum.symfony_serializer.enum_normalizer:
+        class: Fervo\EnumBundle\Serializer\Symfony\EnumNormalizer
+        public: false
+        arguments:
+            - '@translator'
+        tags:
+            - {name: serializer.normalizer, priority: 8}
 
     fervo_enum.param_converter:
         class: Fervo\EnumBundle\ParamConverter\EnumParamConverter
