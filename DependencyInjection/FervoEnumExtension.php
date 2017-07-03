@@ -2,6 +2,7 @@
 
 namespace Fervo\EnumBundle\DependencyInjection;
 
+use Doctrine\Common\Util\Inflector;
 use Fervo\EnumBundle\FervoEnumBundle;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
