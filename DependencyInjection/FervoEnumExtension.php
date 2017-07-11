@@ -50,6 +50,10 @@ class FervoEnumExtension extends Extension
         $container->setParameter('fervo_enum.form_type_classes', $formTypeClasses);
         $container->setParameter('fervo_enum.doctrine_form_map', $doctrineFormMap);
         $container->setParameter('fervo_enum.enum_map', $enumMap);
+
+        $container->setParameter('fervo_enum.serialization.values_in_validation_message', $config['serialization']['values_in_validation_message']);
+        $container->setParameter('fervo_enum.serialization.translation.in_resource', $config['serialization']['translation']['in_resource']);
+        $container->setParameter('fervo_enum.serialization.translation.in_validation_message', $config['serialization']['translation']['in_validation_message']);
     }
 
     protected function writeTypeClassFile($className, $config, $vendorNamespace, $subNamespace, $dir)

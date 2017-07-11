@@ -2,48 +2,26 @@
 
 namespace Fervo\EnumBundle\Serializer\Symfony;
 
-use Fervo\EnumBundle\Enum\AbstractTranslatableEnum;
+use Fervo\EnumBundle\Serializer\AbstractEnumNormalizer;
 use MyCLabs\Enum\Enum;
 use Symfony\Component\Serializer\Exception\InvalidArgumentException;
-use Symfony\Component\Serializer\Exception\UnexpectedValueException;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * {@inheritDoc}
  */
-class EnumNormalizer implements NormalizerInterface, DenormalizerInterface
+class EnumNormalizer extends AbstractEnumNormalizer implements NormalizerInterface, DenormalizerInterface
 {
-    /**
-     * @var TranslatorInterface
-     */
-    public $translator;
-
-    /**
-     * @param TranslatorInterface $translator
-     */
-    public function __construct(TranslatorInterface $translator)
-    {
-        $this->translator = $translator;
-    }
-
     /**
      * {@inheritdoc}
      *
      * @throws InvalidArgumentException
+     * @throws \Symfony\Component\Translation\Exception\InvalidArgumentException
      */
     public function normalize($object, $format = null, array $context = array())
     {
-        if (!$object instanceof Enum) {
-            throw new InvalidArgumentException('The object must extends "\MyCLabs\Enum\Enum".');
-        }
-
-        if ($object instanceof AbstractTranslatableEnum) {
-            return $this->translator->trans($object->getTranslationKey(), array(), 'enums');
-        }
-
-        return $object->getValue();
+        return $this->normalizeEnum($object);
     }
 
     /**
@@ -61,40 +39,7 @@ class EnumNormalizer implements NormalizerInterface, DenormalizerInterface
      */
     public function denormalize($data, $class, $format = null, array $context = array())
     {
-
-        if (null === $data) {
-            return null;
-        }
-        $values = $class::toArray();
-        /* @var $values array */
-        $allowedValues = array();
-        foreach ($values as $constant => $constantValue) {
-            //Allows both translation and constant key
-            try {
-                $enum = $class::$constant();
-                if ($enum instanceof AbstractTranslatableEnum) {
-                    $value = $this->translator->trans($enum->getTranslationKey(), array(), 'enums');
-                    if ($value === ((string)$data)) {
-                        return $enum;
-                    }
-                    $allowedValues[] = $value;
-                } else {
-                    $allowedValues[] = $constantValue;
-                }
-                if ($data === $constantValue) {
-                    return $class::$constant();
-                }
-            } catch (\UnexpectedValueException  $e) {
-
-            }
-
-        }
-
-        throw new UnexpectedValueException($this->translator->trans(
-            '%value% is not a valid value. Allowed values: %allowed_values%',
-            array('%value%' => $data, '%allowed_values%' => implode(',', $allowedValues))),
-            'validators'
-        );
+        return $this->denormalizeEnum($data, $class);
     }
 
     /**

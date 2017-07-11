@@ -22,6 +22,17 @@ class Configuration implements ConfigurationInterface
 
         $rootNode
             ->children()
+                ->arrayNode('serialization')
+                    ->children()
+                        ->booleanNode('values_in_validation_message')->defaultFalse()->end()
+                        ->arrayNode('translation')
+                            ->children()
+                                ->booleanNode('in_resource')->defaultFalse()->end()
+                                ->booleanNode('in_validation_message')->defaultFalse()->end()
+                            ->end()
+                        ->end()
+                    ->end()
+                ->end()
                 ->arrayNode('enums')
                     ->useAttributeAsKey('class')
                     ->prototype('array')

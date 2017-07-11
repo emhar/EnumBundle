@@ -2,29 +2,15 @@
 
 namespace Fervo\EnumBundle\Serializer\JMS;
 
-use Fervo\EnumBundle\Enum\AbstractTranslatableEnum;
+use Fervo\EnumBundle\Serializer\AbstractEnumNormalizer;
 use JMS\Serializer\Context;
-use JMS\Serializer\Exception\RuntimeException;
 use JMS\Serializer\GraphNavigator;
 use JMS\Serializer\VisitorInterface;
-use MyCLabs\Enum\Enum;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Component\Serializer\Exception\InvalidArgumentException;
+use Symfony\Component\Serializer\Exception\UnexpectedValueException;
 
-class EnumHandler
+class EnumHandler extends AbstractEnumNormalizer
 {
-    /**
-     * @var TranslatorInterface
-     */
-    public $translator;
-
-    /**
-     * @param TranslatorInterface $translator
-     */
-    public function __construct(TranslatorInterface $translator)
-    {
-        $this->translator = $translator;
-    }
-
     /**
      * @param VisitorInterface $visitor
      * @param $data
@@ -38,40 +24,19 @@ class EnumHandler
     public function serializeEnumToJson(VisitorInterface $visitor, $data, array $type, Context $context)
     {
         if (((int)$context->getDirection()) === GraphNavigator::DIRECTION_SERIALIZATION) {
-            if (!$data instanceof Enum) {
-                throw new \UnexpectedValueException(sprintf('%s is not a valid enum', $data));
+            try {
+                return $this->normalizeEnum($data);
+            } catch (InvalidArgumentException $e) {
+                throw new \UnexpectedValueException($e->getMessage());
             }
-            if ($data instanceof AbstractTranslatableEnum) {
-                return $this->translator->trans($data->getTranslationKey(), array(), 'enums');
-            }
-            return $data->getValue();
         }
         if (((int)$context->getDirection()) === GraphNavigator::DIRECTION_DESERIALIZATION) {
-            $enumClass = $type['name'];
 
-            if (null === $data) {
-                return null;
+            try {
+                return $this->denormalizeEnum($data, $type['name']);
+            } catch (UnexpectedValueException $e) {
+                throw new \RuntimeException($e->getMessage());
             }
-            $values = $enumClass::toArray();
-            /* @var $values array */
-            foreach ($values as $constant => $constantValue) {
-                //Allows both translation and constant key
-                try {
-                    $enum = $enumClass::$constant();
-                    if ($enum instanceof AbstractTranslatableEnum
-                        && $this->translator->trans($enum->getTranslationKey(), array(), 'enums') === ((string)$data)
-                    ) {
-                        return $enum;
-                    }
-                } catch (\UnexpectedValueException  $e) {
-
-                }
-                if ($data === $constantValue) {
-                    return $enumClass::$constant();
-                }
-            }
-
-            throw new RuntimeException(sprintf('%s is not a valid %s value', $data, $enumClass));
         }
 
         throw new \UnexpectedValueException('Invalid direction');

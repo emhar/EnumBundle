@@ -22,12 +22,18 @@ services:
         public: true
         arguments:
             - '@translator'
+            - '%fervo_enum.serialization.values_in_validation_message%'
+            - '%fervo_enum.serialization.translation.in_validation_message%'
+            - '%fervo_enum.serialization.translation.in_resource%'
 
     fervo_enum.symfony_serializer.enum_normalizer:
         class: Fervo\EnumBundle\Serializer\Symfony\EnumNormalizer
         public: false
         arguments:
             - '@translator'
+            - '%fervo_enum.serialization.values_in_validation_message%'
+            - '%fervo_enum.serialization.translation.in_validation_message%'
+            - '%fervo_enum.serialization.translation.in_resource%'
         tags:
             - {name: serializer.normalizer, priority: 8}
 
