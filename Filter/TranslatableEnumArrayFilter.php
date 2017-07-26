@@ -23,7 +23,10 @@ class TranslatableEnumArrayFilter extends AbstractFilter
     protected $translator;
 
     /**
-     * TranslatableEnumFilter constructor.
+     * @param ManagerRegistry $managerRegistry
+     * @param RequestStack $requestStack
+     * @param LoggerInterface|null $logger
+     * @param array|null $properties
      * @param TranslatorInterface $translator
      */
     public function __construct(ManagerRegistry $managerRegistry, RequestStack $requestStack, LoggerInterface $logger = null, array $properties = null, TranslatorInterface $translator)
