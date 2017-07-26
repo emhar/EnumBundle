@@ -23,9 +23,11 @@ class Configuration implements ConfigurationInterface
         $rootNode
             ->children()
                 ->arrayNode('serialization')
+                    ->addDefaultsIfNotSet()
                     ->children()
                         ->booleanNode('values_in_validation_message')->defaultFalse()->end()
                         ->arrayNode('translation')
+                            ->addDefaultsIfNotSet()
                             ->children()
                                 ->booleanNode('in_resource')->defaultFalse()->end()
                                 ->booleanNode('in_validation_message')->defaultFalse()->end()
