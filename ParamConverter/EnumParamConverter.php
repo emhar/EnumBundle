@@ -2,15 +2,15 @@
 
 namespace Fervo\EnumBundle\ParamConverter;
 
+use MyCLabs\Enum\Enum;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Request\ParamConverter\ParamConverterInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use MyCLabs\Enum\Enum;
 
 /**
-* 
-*/
+ *
+ */
 class EnumParamConverter implements ParamConverterInterface
 {
     /**
@@ -26,7 +26,6 @@ class EnumParamConverter implements ParamConverterInterface
             return false;
         }
 
-        $options = $configuration->getOptions();
         $value = $request->attributes->get($param);
 
         if (!$value && $configuration->isOptional()) {

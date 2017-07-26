@@ -4,19 +4,24 @@ namespace Fervo\EnumBundle\Doctrine;
 
 use AppBundle\Enum\CommentStatus;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
-use Doctrine\DBAL\Platforms\MySqlPlatform;
-use Doctrine\DBAL\Platforms\SqlitePlatform;
 use Doctrine\DBAL\Types\Type;
 
+/**
+ * {@inheritDoc}
+ */
 abstract class AbstractEnumType extends Type
 {
-    abstract public function getEnumClass();
-
+    /**
+     * {@inheritDoc}
+     */
     public function getSqlDeclaration(array $fieldDeclaration, AbstractPlatform $platform)
     {
         return $platform->getVarcharTypeDeclarationSQL($fieldDeclaration);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function convertToPHPValue($value, AbstractPlatform $platform)
     {
         if ($value == null) {
@@ -28,6 +33,11 @@ abstract class AbstractEnumType extends Type
         return new $enumClass($value);
     }
 
+    abstract public function getEnumClass();
+
+    /**
+     * {@inheritDoc}
+     */
     public function convertToDatabaseValue($value, AbstractPlatform $platform)
     {
         if ($value == null) {

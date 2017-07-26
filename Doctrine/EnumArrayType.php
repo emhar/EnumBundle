@@ -4,17 +4,24 @@ namespace Fervo\EnumBundle\Doctrine;
 
 use AppBundle\Enum\CommentStatus;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
-use Doctrine\DBAL\Platforms\MySqlPlatform;
-use Doctrine\DBAL\Platforms\SqlitePlatform;
 use Doctrine\DBAL\Types\Type;
 
+/**
+ * {@inheritDoc}
+ */
 class EnumArrayType extends Type
 {
+    /**
+     * {@inheritDoc}
+     */
     public function getSqlDeclaration(array $fieldDeclaration, AbstractPlatform $platform)
     {
         return $platform->getVarcharTypeDeclarationSQL($fieldDeclaration);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function convertToPHPValue($value, AbstractPlatform $platform)
     {
         if ($value == null) {
@@ -28,13 +35,16 @@ class EnumArrayType extends Type
         }
 
         $enumClass = $data['class'];
-        $values = array_map(function($enumValue) use ($enumClass) {
+        $values = array_map(function ($enumValue) use ($enumClass) {
             return new $enumClass($enumValue);
         }, $data['values']);
 
         return $values;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function convertToDatabaseValue($value, AbstractPlatform $platform)
     {
         if ($value == null) {
@@ -47,7 +57,7 @@ class EnumArrayType extends Type
 
         $struct = [
             'class' => get_class(array_values($value)[0]),
-            'values' => array_map(function($enumInstance) {
+            'values' => array_map(function ($enumInstance) {
                 return $enumInstance->getValue();
             }, $value),
         ];
@@ -55,6 +65,9 @@ class EnumArrayType extends Type
         return json_encode($struct);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function getName()
     {
         return 'enumarray';

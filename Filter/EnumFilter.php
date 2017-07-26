@@ -7,10 +7,6 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Util\QueryNameGeneratorInterface;
 use Doctrine\DBAL\Exception\InvalidArgumentException;
 use Doctrine\ORM\QueryBuilder;
 use Fervo\EnumBundle\Enum\AbstractTranslatableEnum;
-use Psr\Log\LoggerInterface;
-use Symfony\Bridge\Doctrine\ManagerRegistry;
-use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * {@inheritDoc}

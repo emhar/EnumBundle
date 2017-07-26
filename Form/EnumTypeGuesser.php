@@ -3,17 +3,16 @@
 namespace Fervo\EnumBundle\Form;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
-use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use Doctrine\Common\Persistence\Mapping\MappingException;
+use Doctrine\Common\Util\ClassUtils;
 use Doctrine\ORM\Mapping\MappingException as LegacyMappingException;
 use Symfony\Component\Form\FormTypeGuesserInterface;
 use Symfony\Component\Form\Guess\Guess;
 use Symfony\Component\Form\Guess\TypeGuess;
-use Doctrine\Common\Util\ClassUtils;
 
 /**
-*
-*/
+ *
+ */
 class EnumTypeGuesser implements FormTypeGuesserInterface
 {
     protected $registry;
@@ -27,10 +26,13 @@ class EnumTypeGuesser implements FormTypeGuesserInterface
         $this->doctrineFormMap = $doctrineFormMap;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function guessType($class, $property)
     {
         if (!$ret = $this->getMetadata($class)) {
-            return;
+            return null;
         }
 
         list($metadata, $name) = $ret;
@@ -40,21 +42,6 @@ class EnumTypeGuesser implements FormTypeGuesserInterface
         if (isset($this->doctrineFormMap[$doctrineType])) {
             return new TypeGuess($this->doctrineFormMap[$doctrineType]['class'], array(), Guess::HIGH_CONFIDENCE);
         }
-    }
-
-    public function guessRequired($class, $property)
-    {
-
-    }
-
-    public function guessMaxLength($class, $property)
-    {
-
-    }
-
-    public function guessPattern($class, $property)
-    {
-
     }
 
     protected function getMetadata($class)
@@ -76,5 +63,29 @@ class EnumTypeGuesser implements FormTypeGuesserInterface
                 // not an entity or mapped super class, using Doctrine ORM 2.2
             }
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function guessRequired($class, $property)
+    {
+
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function guessMaxLength($class, $property)
+    {
+
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function guessPattern($class, $property)
+    {
+
     }
 }

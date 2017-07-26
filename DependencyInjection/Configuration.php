@@ -14,6 +14,7 @@ class Configuration implements ConfigurationInterface
 {
     /**
      * {@inheritdoc}
+     * @throws \RuntimeException
      */
     public function getConfigTreeBuilder()
     {
@@ -43,8 +44,7 @@ class Configuration implements ConfigurationInterface
                         ->scalarNode('form_type')->end()
                     ->end()
                 ->end()
-            ->end()
-        ;
+            ->end();
 
         // Here you should define the parameters that are allowed to
         // configure your bundle. See the documentation linked above for

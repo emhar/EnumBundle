@@ -8,10 +8,6 @@ use Doctrine\DBAL\Exception\InvalidArgumentException;
 use Doctrine\ORM\QueryBuilder;
 use Fervo\EnumBundle\Enum\AbstractTranslatableEnum;
 use MyCLabs\Enum\Enum;
-use Psr\Log\LoggerInterface;
-use Symfony\Bridge\Doctrine\ManagerRegistry;
-use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * {@inheritDoc}
@@ -78,7 +74,7 @@ class EnumArrayFilter extends AbstractFilter
         /* @var $enumClass Enum|string */
         foreach ($enumClass::values() as $enum) {
             /* @var $enum Enum */
-            $enums[(string) $enum] = $enum;
+            $enums[(string)$enum] = $enum;
         }
 
         $values = array();

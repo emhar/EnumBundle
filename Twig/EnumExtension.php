@@ -6,8 +6,8 @@ use MyCLabs\Enum\Enum;
 use Symfony\Component\Translation\TranslatorInterface;
 
 /**
-* 
-*/
+ *
+ */
 class EnumExtension extends \Twig_Extension
 {
     protected $translator;
@@ -19,11 +19,17 @@ class EnumExtension extends \Twig_Extension
         $this->enumMap = $enumMap;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function getName()
     {
         return 'enum';
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function getTests()
     {
         return [
@@ -31,6 +37,9 @@ class EnumExtension extends \Twig_Extension
         ];
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function getFunctions()
     {
         return [
@@ -47,7 +56,7 @@ class EnumExtension extends \Twig_Extension
     {
         if (isset($this->enumMap[get_class($enum)])) {
             $enumType = $this->enumMap[get_class($enum)];
-            return $this->translator->trans(sprintf("%s.%s", $enumType, $enum->getValue()), [], 'enums');
+            return $this->translator->trans(sprintf('%s.%s', $enumType, $enum->getValue()), [], 'enums');
         }
 
         return $enum->getValue();

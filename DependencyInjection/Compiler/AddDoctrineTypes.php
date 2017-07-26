@@ -2,14 +2,19 @@
 
 namespace Fervo\EnumBundle\DependencyInjection\Compiler;
 
-use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
-use Symfony\Component\DependencyInjection\Reference;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 
+/**
+ * {@inheritDoc}
+ */
 class AddDoctrineTypes implements CompilerPassInterface
 {
     /**
      * {@inheritDoc}
+     * @throws \Symfony\Component\DependencyInjection\Exception\OutOfBoundsException
+     * @throws \Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException
+     * @throws \Symfony\Component\DependencyInjection\Exception\InvalidArgumentException
      */
     public function process(ContainerBuilder $container)
     {
