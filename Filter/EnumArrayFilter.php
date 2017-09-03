@@ -93,6 +93,6 @@ class EnumArrayFilter extends AbstractFilter
             $expressions[] = $queryBuilder->expr()->like('o.' . $property, ':' . $parameterName . $key);
             $queryBuilder->setParameter($parameterName . $key, '%\\"' . $enum . '\\"%');
         }
-        $queryBuilder->andWhere($queryBuilder->expr()->andX(...$expressions));
+        $queryBuilder->andWhere($queryBuilder->expr()->orX(...$expressions));
     }
 }
